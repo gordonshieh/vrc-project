@@ -86,7 +86,7 @@ public class DBManager {
 
             return new Ladder(pairs);
         } catch (IOException e) {
-            return new Ladder();
+            return new Ladder(new ArrayList<>());
         }
     }
 
