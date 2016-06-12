@@ -18,10 +18,16 @@ public class Ladder {
 
     //returns false if pair was not found
     public boolean removePair(Pair pair) {
-        return ladder.remove(pair);
+        int index = ladder.indexOf(pair);
+        if (index != -1) { //pair was found
+            ladder.remove(index);
+            shiftPositions(SHIFT_LEFT, index);
+        } else {
+            return false;
+        }
+        return true;
     }
 
-    //for use in add, remove methods. Shifts the position field of every pair starting at index.
     private void shiftPositions(int direction, int index) {
         if (direction == SHIFT_LEFT) {
             for (int i = index; i < ladder.size(); i++) {
