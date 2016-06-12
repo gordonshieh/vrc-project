@@ -3,7 +3,7 @@ package ca.sfu.teambeta.core;
 import java.util.List;
 
 /**
- * Ladder ranking object. Contains a List of pairs to indicate the ranking of each pair
+ * Created by Gordon Shieh on 25/05/16.
  */
 public class Ladder {
     //used for shiftPositions
