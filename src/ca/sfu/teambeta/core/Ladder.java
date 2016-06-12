@@ -11,11 +11,9 @@ public class Ladder {
     private static final int SHIFT_RIGHT = 2;
 
     private List<Pair> ladder;
-    private int numPairs;
 
     public Ladder(List<Pair> ladder) {
         this.ladder = ladder;
-        this.numPairs = ladder.size();
     }
 
     //returns false if pair was not found
@@ -42,13 +40,11 @@ public class Ladder {
         ladder.add(index, pair);
         ladder.get(index).setPosition(index + 1);
         shiftPositions(SHIFT_RIGHT, index + 1);
-        numPairs++;
     }
 
     public void insertAtEnd(Pair pair) {
         ladder.add(pair);
-        ladder.get(numPairs).setPosition(numPairs + 1);
-        numPairs++;
+        ladder.get(ladder.size() - 1).setPosition(ladder.size());
     }
 
     public List<Pair> getLadder() {
@@ -64,7 +60,7 @@ public class Ladder {
     }
 
     public int getLadderLength() {
-        return numPairs;
+        return ladder.size();
     }
 /* omitted but keeping in case we ever need it
     public void dumpLadder() {
