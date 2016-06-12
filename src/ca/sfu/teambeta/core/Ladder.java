@@ -20,34 +20,9 @@ public class Ladder {
 
     //returns false if pair was not found
     public boolean removePair(Pair pair) {
-        int index = ladder.indexOf(pair);
-        if (index != -1) { //pair was found
-            ladder.remove(index);
-            shiftPositions(SHIFT_LEFT, index);
-            numPairs--;
-        } else {
-            return false;
-        }
-        return true;
+        return ladder.remove(pair);
     }
 
-    /* omitted unless there is a need for function overload
-    public void removePair(Player firstPlayer, Player secondPlayer){
-        boolean removed = false;
-        for (Pair current : passivePairs){
-            if (current.hasPlayer(firstPlayer, secondPlayer)){
-                int iPair = current.getPosition();
-                passivePairs.remove(iPair);
-                members--;
-                removed = true;
-            }
-            if (removed){ //Process following pairs by moving them up
-                int position = current.getPosition();
-                current.setPosition(position - 1);
-            }
-        }
-    }
-    */
     //for use in add, remove methods. Shifts the position field of every pair starting at index.
     private void shiftPositions(int direction, int index) {
         if (direction == SHIFT_LEFT) {
