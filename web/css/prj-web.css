@@ -1,0 +1,77 @@
+.header {
+  display: flex;
+}
+
+.header-initial {
+  flex: initial;
+  width: 300px;
+  min-width: 100px;
+  font-size: 4em;
+  margin: auto;
+  margin-left: 20px;
+}
+
+.header-mid {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-right {
+  flex: 1;
+  margin: auto;
+  margin-right: 20px;
+}
+
+.ladder {
+  padding: 20px 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.ladder-element {
+  width: 80%;
+}
+
+.pair-name {
+  font-weight: bold;
+  text-align: start;
+}
+
+.position {
+  margin-right: 10px;
+  font-size: 1.2em
+}
+
+.toggle-button {
+  float: right;
+  margin: 0;
+}
+
+.matches {
+  display: flex;
+}
+
+.matches-left {
+  flex: 1;
+  margin: 20px;
+}
+
+.matches-mid {
+  flex: 1;
+  margin: 20px;
+}
+
+.matches-right {
+  flex: 1;
+  margin: 20px;
+}
+
+.match-pair {
+  height: 40px;
+}
