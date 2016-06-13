@@ -23,18 +23,6 @@ public class LadderManager {
     private List<Pair> activePairs;
     private List<Pair> passivePairs;
 
-    public LadderManager() {
-        ladder = DBManager.loadFromDB();
-        activePairs = findPairs(ladder.getLadder(), true);
-        passivePairs = findPairs(ladder.getLadder(), false);
-    }
-
-    public LadderManager(String fileName) {
-        ladder = DBManager.loadFromDB(fileName);
-        activePairs = findPairs(ladder.getLadder(), true);
-        passivePairs = findPairs(ladder.getLadder(), false);
-    }
-
     public LadderManager(List<Pair> dbLadder) {
         int index = 1;
         for (Pair current : dbLadder) {
@@ -44,16 +32,6 @@ public class LadderManager {
         ladder = new Ladder(dbLadder);
         activePairs = findPairs(ladder.getLadder(), true);
         passivePairs = findPairs(ladder.getLadder(), false);
-    }
-
-    public LadderManager(Ladder loadedLadder) {
-        if (loadedLadder.getLadder().size() == 0) {
-            ladder = new Ladder(new ArrayList<Pair>());
-        } else {
-            ladder = loadedLadder;
-        }
-        activePairs = new ArrayList<>();
-        passivePairs = new ArrayList<>();
     }
 
     public List<Pair> getLadder() {
