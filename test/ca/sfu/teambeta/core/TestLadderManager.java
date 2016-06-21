@@ -17,7 +17,7 @@ public class TestLadderManager {
     public void testConstructor() {
         List<Pair> testingList = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i+1))));
+            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i + 1, "Player" + (i + 1))));
             i++;
         }
 
@@ -27,7 +27,7 @@ public class TestLadderManager {
         LadderManager ladManWithNull = new LadderManager(Collections.emptyList());
         Assert.assertEquals(ladManWithNull.getLadder(), Collections.emptyList());
 
-        for(Pair p: testingList) {
+        for (Pair p: testingList) {
             System.out.println(p.toString());
         }
     }
@@ -36,7 +36,7 @@ public class TestLadderManager {
     public void testAddRemovePairs() {
         List<Pair> testingList = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i+1))));
+            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i + 1))));
             i++;
         }
         LadderManager ladMan = new LadderManager(testingList);
@@ -68,8 +68,8 @@ public class TestLadderManager {
         List<Pair> testingListActive = new ArrayList<Pair>();
         List<Pair> testingListPassive = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            Pair pairToAdd = new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i+1)));
-            if(i%2 == 0) {
+            Pair pairToAdd = new Pair(new Player(i, "Player" + i), new Player(i + 1, "Player" + (i + 1)));
+            if(i % 2 == 0) {
                 testingList.add(pairToAdd);
                 testingListActive.add(pairToAdd);
             } else {
@@ -89,14 +89,14 @@ public class TestLadderManager {
     public void testSetPlayingStatus() {
         List<Pair> testingList = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i+1))));
+            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i + 1))));
             i++;
         }
         LadderManager ladMan = new LadderManager(testingList);
 
         List<Pair> passivePairs = new ArrayList<Pair>();
         int index = 1;
-        for(Pair p: testingList) {
+        for (Pair p: testingList) {
             ladMan.setNotPlaying(p);
             passivePairs.add(p);
             List<Pair> activePairs = testingList.subList(index, testingList.size());
@@ -104,7 +104,7 @@ public class TestLadderManager {
             index++;
         }
         Assert.assertEquals(ladMan.getPassivePairs(), passivePairs);
-        for(Pair p: passivePairs) {
+        for (Pair p: passivePairs) {
             ladMan.setIsPlaying(p);
         }
         Assert.assertEquals(ladMan.getLadder(), testingList);
