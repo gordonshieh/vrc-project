@@ -36,7 +36,7 @@ public class TestLadderManager {
     public void testAddRemovePairs() {
         List<Pair> testingList = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i + 1))));
+            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i + 1, "Player" + (i + 1))));
             i++;
         }
         LadderManager ladMan = new LadderManager(testingList);
@@ -69,7 +69,7 @@ public class TestLadderManager {
         List<Pair> testingListPassive = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
             Pair pairToAdd = new Pair(new Player(i, "Player" + i), new Player(i + 1, "Player" + (i + 1)));
-            if(i % 2 == 0) {
+            if (i % 2 == 0) {
                 testingList.add(pairToAdd);
                 testingListActive.add(pairToAdd);
             } else {
@@ -89,7 +89,7 @@ public class TestLadderManager {
     public void testSetPlayingStatus() {
         List<Pair> testingList = new ArrayList<Pair>();
         for (int i = 0; i < 10; i++) {
-            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i+1, "Player" + (i + 1))));
+            testingList.add(new Pair(new Player(i, "Player" + i), new Player(i + 1, "Player" + (i + 1))));
             i++;
         }
         LadderManager ladMan = new LadderManager(testingList);
