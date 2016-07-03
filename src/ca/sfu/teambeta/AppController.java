@@ -243,6 +243,11 @@ public class AppController {
             return getOkResponse("");
         });
 
+        post("/api/matches", (request, response) -> {
+            String json = dbManager.generateScorecards();
+            return json;
+        });
+
         //Show a list of matches
         get("/api/matches", (request, response) -> {
             String json = dbManager.getJSONScorecards();

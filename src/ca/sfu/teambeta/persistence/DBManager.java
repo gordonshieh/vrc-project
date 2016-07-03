@@ -1,8 +1,8 @@
 package ca.sfu.teambeta.persistence;
 
 import com.google.gson.Gson;
-
 import com.google.gson.GsonBuilder;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -366,6 +366,18 @@ public class DBManager {
         JSONSerializer serializer = new LadderJSONSerializer(ladder,
                 gameSession.getActivePairSet());
         return serializer.toJson();
+    }
+
+    public String generateScorecards() {
+        GameSession gameSession = getGameSessionLatest();
+        gameSession.createGroups(new VrcScorecardGenerator());
+
+        List<Scorecard> scorecards = gameSession.getScorecards();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gson.toJson(scorecards);
+
+        submitGameSession(gameSession);
+        return json;
     }
 
     public String getJSONScorecards() {
