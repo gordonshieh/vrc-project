@@ -50,6 +50,16 @@ public class DBManager {
         config.addAnnotatedClass(GameSession.class);
         config.addAnnotatedClass(Penalty.class);
         config.addAnnotatedClass(User.class);
+        config.setProperty("hibernate.c3p0.validate", "true");
+        config.setProperty("hibernate.connection.provider_class", "org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider");
+        config.setProperty("hibernate.c3p0.min_size", "5");
+        config.setProperty("hibernate.c3p0.max_size", "600");
+        config.setProperty("hibernate.c3p0.timeout", "1800");
+        config.setProperty("hibernate.c3p0.max_statements", "50");
+        config.setProperty("hibernate.c3p0.preferredTestQuery", "SELECT 1;");
+        config.setProperty("hibernate.c3p0.testConnectionOnCheckout", "true");
+        config.setProperty("hibernate.c3p0.idle_test_period", "3000");
+
         return config;
     }
 

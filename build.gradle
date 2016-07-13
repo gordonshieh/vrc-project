@@ -58,6 +58,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
     compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
     compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.1.0.Final'
     compile files('web')
 }
 
