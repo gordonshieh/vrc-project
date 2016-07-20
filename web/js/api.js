@@ -189,10 +189,24 @@ var API = (function() {
         });
     };
 
-    API.prototype.reorderLadder = function(gameSession) {
+    API.prototype.reorderLadder = function (gameSession, doneCallback, failCallback) {
         $.ajax({
             method: "POST",
             url: SERVER_URL + "/matches" + GAMESESSION_PARAM + gameSession
+        })
+        .done(function (response) {
+            if (doneCallback) {
+                doneCallback(response);
+            }
+        })
+        .fail(function (response) {
+            if (failCallback) {
+                failCallback(response);
+            }
+            else {
+                var responseBody = JSON.parse(response.responseText);
+                alert(responseBody.message);
+            }
         });
     };
 
@@ -205,6 +219,7 @@ var API = (function() {
             var matches = JSON.parse(response);
             matches.forEach(function(match, i) {
                 match.scorecardIndex = i;
+                match.mode = "read";
                 match.resultsValid = false;
                 match.results = [];
                 match.pairs.forEach(function(pair) {

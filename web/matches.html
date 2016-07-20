@@ -162,7 +162,7 @@
                                      class="match-heading panel-heading">
                                     <h3 class="match-title panel-title">Match {{
                                         match.scorecardIndex + 1 }}</h3>
-                                    <component :is="mode" column="left" :index="$index"
+                                    <component :is="match.mode" column="left" :index="$index"
                                                transition="fade" transition-mode="out-in">
                                     </component>
                                 </div>
@@ -193,6 +193,7 @@
 <script src="vendors/jquery-1.12.4.js"></script>
 <script src="vendors/vue.js"></script>
 <script src="vendors/vue-validator.js"></script>
+<script src="vendors/vue-spinner.js"></script>
 <script src="vendors/bootstrap.js"></script>
 <script src="vendors/material.js"></script>
 <script src="vendors/ripples.js"></script>

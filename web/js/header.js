@@ -16,7 +16,8 @@ var Header = (function() {
             },
             components: {
                 read: blankButton,
-                edit: blankButton
+                edit: blankButton,
+                loading: VueSpinner.ClipLoader
             },
             methods: {
                 onClick: function() {

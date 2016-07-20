@@ -61,7 +61,8 @@ var Matches = (function () {
             },
             components: {
                 edit: editButton,
-                read: blankButton
+                read: blankButton,
+                loading: VueSpinner.ClipLoader
             }
         });
     }
@@ -113,6 +114,8 @@ var Matches = (function () {
         var match = this.matchlist[index];
         var results = [];
 
+        match.mode = "loading";
+
         for (var round = 0; round < match.pairs.length; round++) {
             var roundResult = [];
             for (var pair in match.pairs) {
@@ -131,9 +134,19 @@ var Matches = (function () {
     Matches.prototype.changeMode = function () {
         if (this.mode === 'read') {
             this.mode = 'edit';
+            this.matches.forEach(function (match) {
+                if (match.mode !== "loading") {
+                    match.mode = "edit";
+                }
+            });
         }
         else {
             this.mode = 'read';
+            this.matches.forEach(function (match) {
+                if (match.mode !== "loading") {
+                    match.mode = "read";
+                }
+            });
         }
     };
 

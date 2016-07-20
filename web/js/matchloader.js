@@ -20,8 +20,17 @@
         template: '<a v-on:click="saveResults()" class="btn btn-raised btn-success header-button">Save Results</a>',
         methods: {
             saveResults: function() {
+                var header = this.$parent;
+                header.mode = "loading";
                 var api = new API();
-                api.reorderLadder(api.gameSession.LATEST);
+                var doneCallback = function() {
+                    header.mode = "edit";
+                };
+                var failCallback = function(response) {
+                    header.mode = "edit";
+                    alert(JSON.parse(response.responseText).responseBody);
+                };
+                api.reorderLadder(api.gameSession.LATEST, doneCallback.bind(this), failCallback.bind(this));
             }
         },
         parent: header.component
