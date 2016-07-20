@@ -36,22 +36,32 @@
                             </div>
 
                             <div class="modal-body">
-                                <div class="match-pair" v-for="(pairIndex, pair) in match.pairs">
-                                    <div class="pair-name match-pair-left">
-                                        <span class="col-sm-1 label label-info position">{{ $index + 1 }}</span>
-                                        <div>
-                                            {{ pair.players[0].firstName }} {{pair.players[0].lastName }} and
-                                            {{ pair.players[1].firstName }} {{pair.players[1].lastName}}
+                                <div class="modal-pair-listing">
+                                    <div class="mi-header">
+                                        <div class="mi-header-body">
+                                            <span class="position-label"> </span>
+                                            <span class="mi-header-teamname"> TEAM NAME </span>
+                                            <span class="mi-header-ranking"> POST-MATCH RANKING</span>
                                         </div>
-                                        <span v-for="(roundIndex, pair2) in match.pairs" style="position: relative; display: inline-block; vertical-align: top;">
-                                            <span class="dropdown">
-                                                <select class="btn btn-primary dropdown" style="margin: 0; padding: 5px" v-model="match.results[pairIndex][roundIndex]">
-                                                    <option value="-">N/A</option>
-                                                    <option value="W">Win</option>
-                                                    <option value="L">Lose</option>
+                                        <span class="mi-header-filler-end"> </span>
+                                    </div>
+                                </div>
+                                <div class="modal-pair-listing" v-for="(pairIndex, pair) in match.pairs">
+                                    <div class="pair-name match-pair-left">
+                                        <span class="label label-info position-label ">{{ $index + 1 }}</span>
+                                        <div class="team-name modal-listing-item">
+                                            <span>
+                                                {{ pair.players[0].firstName }} {{pair.players[0].lastName }} /
+                                            </span>
+                                            <span>
+                                                {{ pair.players[1].firstName }} {{pair.players[1].lastName}}
+                                            </span>
+                                        </div>
+                                        </span> <span class="dropdown">
+                                                <select class="col-sm-6 dropdown-item modal-listing-item" style="margin: 0; padding: 5px" v-model="match.results[pairIndex][roundIndex]">
+                                                   <option v-for="(pairIndex, pair2) in match.pairs" value="pairIndex + 1">{{ pairIndex + 1 }}</option>
                                                 </select>
                                             </span>
-                                        </span>
                                     </div>
                                     <div class="match-pair-right">
                                         <button class="btn btn-xs btn-danger"
