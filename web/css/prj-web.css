@@ -143,13 +143,27 @@
     align-items: center;
 }
 
-.match-pair-left {
-    flex: 1;
+.modal-pair-listing {
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
+
+.match-pair-left {
+    flex: 2.5;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    height: 3.5em;
+}
 .match-pair-right {
+    flex: 1;
     display: flex;
     justify-content: flex-end;
+    min-width: 10em;
+    height: 3.5em;
 }
 
 .match-pair-button {
@@ -284,6 +298,54 @@
     cursor: pointer;
 }
 
+/**/
+
+.position-label {
+    font-size: 1.5em;
+    margin: auto;
+    margin-right: 1.5em;
+    width: 1.8em;
+
+}
+.dropdown-item{
+    width: 4em;
+}
+.modal-listing-item {
+    flex: 1;
+}
+.team-name{
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    font-size: .93em
+}
+
+.mi-header {
+    display: flex;
+    width: 100%;
+}
+.mi-header-body{
+    flex: 2.5;
+    display: flex;
+    flex-flow: row;
+}
+.mi-header-teamname {
+    flex: 1;
+    text-align: center;
+    font-size: .9em;
+    font-weight: bold;
+}
+.mi-header-ranking {
+    flex: 1;
+    text-align: end;
+    font-size: .9em;
+    font-weight: bold;
+}
+.mi-header-filler-end{
+    flex: 1;
+    min-width: 10em;
+}
+/**/
 @media screen and (max-width: 1030px) {
     .match-item {
         flex-basis: 47%;
