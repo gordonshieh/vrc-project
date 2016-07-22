@@ -26,7 +26,7 @@
 
   </head>
 
-  <body>
+  <body style="min-width:450px">
 
   <nav class="navbar navbar-info">
     <div class="container-fluid">
@@ -59,11 +59,9 @@
       <h1 class="header-initial">{{ title }}</h1></div>
     <div class="header-item"><h1 class = "header-mid">Last modified on {{ timestamp }}</h1></div>
     <div class="header-right header-item">
-      <div class = "header-button">
         <component :is="mode" transition="fade" transition-mode="out-in">
         </component>
-        <a v-on:click="onClick()" class="btn btn-raised btn-primary ">{{ buttonTitle }}</a>
-      </div>
+        <a v-on:click="onClick()" class="btn btn-raised btn-primary header-button">{{ buttonTitle }}</a>
     </div>
   </div>
 

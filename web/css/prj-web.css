@@ -17,12 +17,13 @@
     align-self: flex-start;
     margin: auto;
     margin-left: 20px;
+    margin-right: 10px;
     font-size: 4em;
 }
 
 .header-mid {
     text-align: center;
-    font-size: 1em;
+    font-size: .85em;
 }
 
 .header-right {
@@ -33,6 +34,8 @@
 }
 
 .header-button {
+    flex: 1;
+    max-width: 70%;
     margin: 5px;
 }
 
@@ -228,6 +231,10 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
+.mymodal-content {
+    min-width: 450px;
+}
+
 .mymodal-header h3 {
     margin-top: 0;
     color: #42b983;
@@ -355,6 +362,10 @@
 
 @media screen and (max-width: 767px) {
 
+    .btn {
+        padding-left: 2.5vw;
+        padding-right: 2.5vw;
+    }
     .header {
         display: flex;
         flex-direction: column;
@@ -370,11 +381,16 @@
         margin: auto;
         margin-left: -5px;
     }
-
+    .header-mid {
+        font-size: 1em;
+    }
     .header-right {
+        margin-left: 20px;
         justify-content: center;
     }
-
+    .header-button {
+        max-width: 40%;
+    }
     .ladder {
         flex-flow: row wrap;
         justify-content: center;
@@ -388,5 +404,20 @@
     .match-item {
         flex-basis: 80vw;
         max-width: 90vw;
+    }
+}
+@media screen and (max-width: 500px) {
+    .mi-header-teamname {
+        font-size: .7em;
+    }
+    .mi-header-ranking {
+        font-size: .7em;
+    }
+
+    .team-name{
+        font-size: .75em
+    }
+    .btn {
+        font-size: .9em;
     }
 }

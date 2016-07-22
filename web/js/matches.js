@@ -101,7 +101,7 @@ var Matches = (function () {
         var numPlayed = 0;
         var ranksTaken = [];
         results.forEach(function(result){
-            if(result.beenPlayed == true){
+            if(result.beenPlayed === true){
                 var thisRanking = result.newRanking;
                 var isRankTaken = false;
                 for (var i = 0; i < ranksTaken.length; i++) {
@@ -114,7 +114,7 @@ var Matches = (function () {
                     numPlayed++;
                 }
             }
-        })
+        });
 
         var isValid = ROUNDS_TO_PLAY === numPlayed;
         currentMatch.resultsValid = isValid;
