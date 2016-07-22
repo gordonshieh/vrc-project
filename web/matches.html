@@ -58,8 +58,8 @@
                                             </span>
                                         </div>
                                         </span> <span class="dropdown">
-                                                <select class="col-sm-6 dropdown-item modal-listing-item" style="margin: 0; padding: 5px" v-model="match.results[pairIndex][roundIndex]">
-                                                   <option v-for="(pairIndex, pair2) in match.pairs" value="pairIndex + 1">{{ pairIndex + 1 }}</option>
+                                                <select class="col-sm-6 dropdown-item modal-listing-item" style="margin: 0; padding: 5px" v-model="match.results[pairIndex]">
+                                                   <option v-for="(pairIndex, pair2) in match.pairs"  v-bind:value="{ pairId: pair2.id, newRanking: pairIndex + 1, beenPlayed: true }">{{ pairIndex + 1 }}</option>
                                                 </select>
                                             </span>
                                     </div>
