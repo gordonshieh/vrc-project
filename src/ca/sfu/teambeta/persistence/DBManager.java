@@ -446,4 +446,22 @@ public class DBManager {
         persistEntity(gameSession);
         return time;
     }
+
+    public synchronized boolean userHasScorecardAccess(int userId, int scorecardId) {
+        try {
+            Transaction tx = session.beginTransaction();
+            Scorecard scorecard =
+                    (Scorecard) session.createQuery("from Scorecard sc " +
+                            "join Scorecard_Pair sp on sp.Scorecard_id = sc.id " +
+                            "join User u on u.associatedPlayer_id = sp.pairs_id " +
+                            "where u.id = :userId and sp.Scorecard_id = :scorecardId;")
+                            .setInteger("userId", userId)
+                            .setInteger("scorecardId", scorecardId)
+                            .uniqueResult();
+            return scorecard != null;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
 }
