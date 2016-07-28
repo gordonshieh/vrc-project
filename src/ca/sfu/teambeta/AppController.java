@@ -2,11 +2,15 @@ package ca.sfu.teambeta;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import ca.sfu.teambeta.core.JsonExtractedData;
 import ca.sfu.teambeta.core.Pair;
@@ -46,15 +50,13 @@ public class AppController {
     public static final String JAR_STATIC_HTML_PATH = "/web";
     public static final int DEVELOP_SERVER_PORT = 8000;
     public static final int JAR_SERVER_PORT = 443;
+    public static final String PLAYING_STATUS = "playing";
+    public static final String NOT_PLAYING_STATUS = "not playing";
     private static final String ID = "id";
     private static final String STATUS = "newStatus";
     private static final String POSITION = "position";
-
     private static final String TIME_SLOT_1 = "08:00 pm";
     private static final String TIME_SLOT_2 = "09:30 pm";
-    public static final String PLAYING_STATUS = "playing";
-    public static final String NOT_PLAYING_STATUS = "not playing";
-
     private static final String GAMESESSION = "gameSession";
     private static final String GAMESESSION_PREVIOUS = "previous";
     private static final String GAMESESSION_LATEST = "latest";
@@ -203,40 +205,41 @@ public class AppController {
         //in case of adding a pair at the end of ladder, position is length of ladder
         post("/api/ladder", (request, response) -> {
             String body = request.body();
-            JsonExtractedData extractedData = gson.fromJson(body, JsonExtractedData.class);
-            final int MAX_SIZE = 2;
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(body).getAsJsonObject();
+            JsonArray playersJsonArray = jsonObject.getAsJsonArray("players");
+
+            int newPosition = jsonObject.get("position").getAsInt();
+            Set<Integer> playerIds = new HashSet<>();
+
+            for (JsonElement item : playersJsonArray) {
+                JsonObject itemJsonObject = item.getAsJsonObject();
+                int playerId = 0;
+                if (itemJsonObject.has("firstName")) {
+                    String firstName = itemJsonObject.get("firstName").getAsString();
+                    String lastName = itemJsonObject.get("lastName").getAsString();
+
+                    Player player = new Player(firstName, lastName);
+                    playerId = dbManager.addNewPlayer(player);
+                } else if (itemJsonObject.has("existingId")) {
+                    playerId = itemJsonObject.get("existingId").getAsInt();
+                    playerIds.add(playerId);
+                } else {
+                    response.status(422);
+                    return getErrResponse("Must initialize a player or specify an existing player");
+                }
+                playerIds.add(playerId);
+            }
+
+            if (playerIds.size() != Pair.NUM_PLAYERS) {
+                response.status(422);
+                return getErrResponse("A Pair must be composed of two Players");
+            }
 
             GameSession gameSession = dbManager.getGameSessionLatest();
 
-            boolean validPos = InputValidator.checkLadderPosition(
-                    extractedData.getPosition(), dbManager.getLadderSize(gameSession));
-
-            List<Player> newPlayers = extractedData.getPlayers();
-
-            try {
-                InputValidator.validateNewPlayers(newPlayers, MAX_SIZE);
-            } catch (InvalidInputException exception) {
-                response.status(BAD_REQUEST);
-                return getErrResponse(exception.getMessage());
-            }
-
-            for (int i = 0; i < MAX_SIZE; i++) {
-                Integer existingId = newPlayers.get(i).getExistingId();
-                if (existingId != null && existingId >= 0) {
-                    newPlayers.remove(i);
-                    newPlayers.add(i, dbManager.getPlayerFromID(existingId));
-                }
-            }
-
-            Pair pair = new Pair(newPlayers.get(0), newPlayers.get(1));
-
-            if (validPos) {
-                dbManager.addPair(gameSession, pair, extractedData.getPosition() - 1);
-                response.status(OK);
-            } else {
-                dbManager.addPair(gameSession, pair);
-                response.status(OK);
-            }
+            dbManager.createPairAddToLadder(gameSession, playerIds, newPosition);
+            response.status(OK);
 
             return getOkResponse("");
         });

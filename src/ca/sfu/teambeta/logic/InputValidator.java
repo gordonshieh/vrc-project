@@ -2,9 +2,6 @@ package ca.sfu.teambeta.logic;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
-
-import ca.sfu.teambeta.core.Player;
 import ca.sfu.teambeta.core.Scorecard;
 import ca.sfu.teambeta.core.exceptions.InvalidInputException;
 import ca.sfu.teambeta.persistence.DBManager;
@@ -23,7 +20,6 @@ public class InputValidator {
     private static final int MAX_PASSWORD_LENGTH = 128;
     private static final int MIN_PASSWORD_LENGTH = 6;
     private static final int PHONE_NUMBER_LENGTH = 10;
-
 
     // MARK: Core Input Validation Methods
     public static void validateEmailFormat(String email) throws InvalidInputException {
@@ -86,23 +82,6 @@ public class InputValidator {
             throws InvalidInputException {
         validateNullOrEmptyString(sessionId);
 
-    }
-
-    public static void validateNewPlayers(List<Player> newPlayers, int maxSize)
-            throws InvalidInputException {
-        if (newPlayers.size() != maxSize) {
-            throw new InvalidInputException("A Pair cannot have more than 2 players.");
-        }
-
-        for (Player player : newPlayers) {
-            Integer existingId = player.getExistingId();
-            // Ignore player objects that will be replaced by existing player objects
-            if (!(existingId >= 0)) {
-                validatePlayerName(player.getFirstName());
-                validateNullOrEmptyString(player.getFirstName());
-                validatePlayerName(player.getLastName());
-            }
-        }
     }
 
     public static void validateResults(Scorecard scorecard, String[][] results)

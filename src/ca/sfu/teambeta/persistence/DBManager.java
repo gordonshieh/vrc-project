@@ -14,8 +14,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ca.sfu.teambeta.core.Ladder;
 import ca.sfu.teambeta.core.Pair;
@@ -238,13 +240,28 @@ public class DBManager {
         }
     }
 
-    public synchronized void addPair(GameSession gameSession, Pair pair, int position) {
-        gameSession.addNewPairAtIndex(pair, position);
-        persistEntity(gameSession);
-    }
+    public synchronized void createPairAddToLadder(GameSession gameSession, Set<Integer> playerIds, int position) {
+        boolean isValid = 0 <= position && position <= gameSession.getAllPairs().size();
 
-    public synchronized void addPair(GameSession gameSession, Pair pair) {
-        gameSession.addNewPairAtEnd(pair);
+        Transaction tx = session.beginTransaction();
+        try {
+            Set<Player> players = new HashSet<>();
+            for (int id : playerIds) {
+                Player player = session.load(Player.class, id);
+                players.add(player);
+            }
+
+            Pair pair = new Pair(players);
+            if (isValid) {
+                gameSession.addNewPairAtIndex(pair, position);
+            } else {
+                gameSession.addNewPairAtEnd(pair);
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            tx.rollback();
+            e.printStackTrace();
+        }
         persistEntity(gameSession);
     }
 
@@ -393,15 +410,16 @@ public class DBManager {
         }
     }
 
-    public synchronized void addNewPlayer(Player player) throws AccountRegistrationException {
-        Transaction tx = null;
+    public synchronized int addNewPlayer(Player player) throws AccountRegistrationException {
+        Transaction tx = session.beginTransaction();
+        int key = 0;
         try {
-            tx = session.beginTransaction();
-            session.saveOrUpdate(player);
+            key = (int) session.save(player);
             tx.commit();
         } catch (HibernateException e) {
             tx.rollback();
         }
+        return key;
     }
 
     // Rankings are in a format of pairID -> position in scorecard
@@ -427,11 +445,6 @@ public class DBManager {
         persistEntity(gameSession);
     }
 
-    public enum GameSessionVersion {
-        CURRENT,
-        PREVIOUS
-    }
-
     public synchronized void setTimeSlot(int pairId, Time time) {
         GameSession gameSession = getGameSessionLatest();
         Pair pair = getPairFromID(pairId);
@@ -449,5 +462,10 @@ public class DBManager {
 
     public void writeToCsvFile(GameSession gameSession) {
         CSVReader.exportCsv(gameSession.getAllPairs());
+    }
+
+    public enum GameSessionVersion {
+        CURRENT,
+        PREVIOUS
     }
 }

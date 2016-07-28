@@ -29,9 +29,9 @@ import ca.sfu.teambeta.persistence.Persistable;
 @Entity(name = "Pair")
 @Embeddable
 public class Pair extends Persistable {
+    public static final int NUM_PLAYERS = 2;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @Expose
     private Set<Player> players = new HashSet<>();
     @Column(name = "date_created")
     @Type(type = "timestamp")
@@ -49,6 +49,13 @@ public class Pair extends Persistable {
     private Time timeSlot;
 
     public Pair() {
+    }
+
+    public Pair(Set<Player> players) {
+        this.players = new HashSet<>(players);
+        dateCreated = new Date();
+        this.isPlaying = false;
+        timeSlot = Time.NO_SLOT;
     }
 
     public Pair(Player firstPlayer, Player secondPlayer) {
