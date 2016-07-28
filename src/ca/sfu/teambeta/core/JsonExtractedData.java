@@ -13,8 +13,6 @@ public class JsonExtractedData {
     @Expose
     public List<Map<String, String>> results;
     @Expose
-    private List<Player> players;
-    @Expose
     private int position;
     @Expose
     private String email;
@@ -25,11 +23,6 @@ public class JsonExtractedData {
 
 
     public JsonExtractedData() {
-        this.players = null;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
     }
 
     public int getPosition() {
