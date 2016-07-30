@@ -145,12 +145,13 @@ public class DBManagerTest {
 
         List<GameSession> sessionsList = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
-            GameSession currSession = generateGameSession(i);
+            LocalDateTime dateTime = LocalDateTime.now().minusWeeks(i);
+            GameSession currSession = generateGameSession(dateTime.toEpochSecond(ZoneOffset.ofTotalSeconds(0)));
             sessionsList.add(currSession);
             dbManager.persistEntity(currSession);
         }
 
-        GameSession expectedLatest = sessionsList.get(sessionsList.size() - 1);
+        GameSession expectedLatest = sessionsList.get(0);
         GameSession resultLatest = dbManager.getGameSessionLatest();
 
         assertEquals(expectedLatest.getID(), resultLatest.getID());
