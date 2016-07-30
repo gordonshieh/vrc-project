@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -106,7 +107,7 @@ public class DBManagerTest {
         );
         Collections.shuffle(ladderPairs);
         Ladder ladder = new Ladder(ladderPairs);
-        return new GameSession(ladder, timestamp);
+        return new GameSession(ladder, new Timestamp(timestamp));
     }
 
     @Test

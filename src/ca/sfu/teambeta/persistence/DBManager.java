@@ -271,6 +271,9 @@ public class DBManager {
         } catch (HibernateException e) {
             tx.rollback();
         }
+        GameSession gameSession = getGameSessionLatest();
+        gameSession.updateTimestamp();
+        persistEntity(gameSession);
         return removed;
     }
 
@@ -331,7 +334,7 @@ public class DBManager {
     public synchronized String getJSONLadder(GameSession gameSession) {
         List<Pair> ladder = gameSession.getAllPairs();
         JSONSerializer serializer = new LadderJSONSerializer(ladder,
-                gameSession.getActivePairSet(), gameSession.getTimeSlots());
+                gameSession.getActivePairSet(), gameSession.getTimeSlots(), gameSession.getTimestamp());
         return serializer.toJson();
     }
 

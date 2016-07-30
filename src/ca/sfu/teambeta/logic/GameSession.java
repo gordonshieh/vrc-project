@@ -1,14 +1,9 @@
 package ca.sfu.teambeta.logic;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -48,33 +43,34 @@ public class GameSession extends Persistable {
     @ElementCollection
     private Map<Pair, Time> timeSlots = new HashMap<>();
 
-    private long timestamp;
+    private Timestamp timestamp;
 
     // Default constructor for Hibernate
     public GameSession() {
-        setTimestamp();
     }
 
     public GameSession(Ladder ladder) {
         this.ladder = ladder;
         initializeActivePlayers();
         createGroups(new VrcScorecardGenerator(), new VrcTimeSelection());
-
-        setTimestamp();
+        updateTimestamp();
     }
 
     // Constructor for testing
-    public GameSession(Ladder ladder, long timestamp) {
+    public GameSession(Ladder ladder, Timestamp timestamp) {
         this.ladder = ladder;
         initializeActivePlayers();
         createGroups(new VrcScorecardGenerator(), new VrcTimeSelection());
-
-        this.timestamp = timestamp;
+        timestamp = timestamp;
     }
 
-    private void setTimestamp() {
-        this.timestamp = Instant.now().getEpochSecond();
+    public void updateTimestamp() {
+        Calendar calender = Calendar.getInstance();
+        Date now = calender.getTime();
+        timestamp = new Timestamp(now.getTime());
     }
+
+    public Timestamp getTimestamp() { return timestamp; }
 
     // Use me ONLY for importing a CSV file!!
     public void replaceLadder(Ladder ladder) {
@@ -82,7 +78,7 @@ public class GameSession extends Persistable {
         initializeActivePlayers();
         updatePairsLastWeekPositions();
         createGroups(new VrcScorecardGenerator(), new VrcTimeSelection());
-        setTimestamp();
+        updateTimestamp();
     }
 
     public List<Scorecard> createGroups(ScorecardGenerator generator, TimeSelection timeSelector) {
@@ -193,6 +189,7 @@ public class GameSession extends Persistable {
         } else {
             reorderedLadder.setNewPairs(reorderedList);
         }
+        updateTimestamp();
         for (Pair p : getAllPairs()) {
             p.setPairScore(0);
         }
@@ -212,6 +209,7 @@ public class GameSession extends Persistable {
             newPair.setLastWeekPosition(index + 1);
             ladder.insertAtIndex(index, newPair);
         }
+        updateTimestamp();
         return pairExists;
     }
 
@@ -221,6 +219,7 @@ public class GameSession extends Persistable {
             newPair.setLastWeekPosition(ladder.getLadderLength() + 1);
             ladder.insertAtEnd(newPair);
         }
+        updateTimestamp();
         return pairExists;
     }
 

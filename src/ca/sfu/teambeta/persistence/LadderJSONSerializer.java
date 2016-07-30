@@ -3,6 +3,7 @@ package ca.sfu.teambeta.persistence;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +20,13 @@ public class LadderJSONSerializer implements JSONSerializer {
     private List<Pair> pairList;
     private Set<Pair> activePairs;
     private Map<Pair, Time> timeSlots;
+    private Timestamp timeStamp;
     
-    LadderJSONSerializer(List<Pair> pairList, Set<Pair> activePairs, Map<Pair, Time> timeSlots) {
+    LadderJSONSerializer(List<Pair> pairList, Set<Pair> activePairs, Map<Pair, Time> timeSlots, Timestamp timeStamp) {
         this.pairList = pairList;
         this.activePairs = activePairs;
         this.timeSlots = timeSlots;
+        this.timeStamp = timeStamp;
     }
 
     private JsonObject getPairJsonObject(Pair pair, int position, boolean isPlaying) {
@@ -52,7 +55,7 @@ public class LadderJSONSerializer implements JSONSerializer {
     @Override
     public String toJson() {
         JsonObject ladderObject = new JsonObject();
-        ladderObject.addProperty("timeStamp", getMostRecentTimeStamp());
+        ladderObject.addProperty("timeStamp", this.timeStamp.toString());
         JsonArray pairsArray = new JsonArray();
         int position = 1;
         for (Pair pair : pairList) {
@@ -63,16 +66,5 @@ public class LadderJSONSerializer implements JSONSerializer {
         }
         ladderObject.add("pairs", pairsArray);
         return ladderObject.toString();
-    }
-
-    private String getMostRecentTimeStamp() {
-        Date mostRecentDate = new Date(0);
-        for (Pair pair: pairList) {
-            Date date = pair.getDateCreated();
-            if (date.after(mostRecentDate)) {
-                mostRecentDate = date;
-            }
-        }
-        return mostRecentDate.toString();
     }
 }
