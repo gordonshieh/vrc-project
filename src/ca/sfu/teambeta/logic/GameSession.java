@@ -70,7 +70,9 @@ public class GameSession extends Persistable {
         timestamp = new Timestamp(now.getTime());
     }
 
-    public Timestamp getTimestamp() { return timestamp; }
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
 
     // Use me ONLY for importing a CSV file!!
     public void replaceLadder(Ladder ladder) {
