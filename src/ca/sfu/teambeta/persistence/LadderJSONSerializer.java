@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class LadderJSONSerializer implements JSONSerializer {
     private Set<Pair> activePairs;
     private Map<Pair, Time> timeSlots;
     private Timestamp timeStamp;
-    
+
     LadderJSONSerializer(List<Pair> pairList, Set<Pair> activePairs, Map<Pair, Time> timeSlots, Timestamp timeStamp) {
         this.pairList = pairList;
         this.activePairs = activePairs;
@@ -43,7 +44,7 @@ public class LadderJSONSerializer implements JSONSerializer {
         pairJson.addProperty("id", pair.getID());
         pairJson.addProperty("pairScore", pair.getPairScore());
         pairJson.addProperty("position", position);
-        int positionChange = ( pair.getLastWeekPosition() - position );
+        int positionChange = (pair.getLastWeekPosition() - position);
         pairJson.addProperty("positionChange", positionChange);
         pairJson.addProperty("isPlaying", isPlaying);
         if (timeSlots.containsKey(pair)) {
@@ -55,7 +56,7 @@ public class LadderJSONSerializer implements JSONSerializer {
     @Override
     public String toJson() {
         JsonObject ladderObject = new JsonObject();
-        ladderObject.addProperty("timeStamp", this.timeStamp.toString());
+        ladderObject.addProperty("timeStamp", getFormattedTimeStamp());
         JsonArray pairsArray = new JsonArray();
         int position = 1;
         for (Pair pair : pairList) {
@@ -66,5 +67,10 @@ public class LadderJSONSerializer implements JSONSerializer {
         }
         ladderObject.add("pairs", pairsArray);
         return ladderObject.toString();
+    }
+
+    private String getFormattedTimeStamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return dateFormat.format(this.timeStamp);
     }
 }
