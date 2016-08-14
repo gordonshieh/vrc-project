@@ -1,0 +1,73 @@
+{% extends "templates/base.html" %}
+
+{% block title %} Ladder {% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div class="loginwrapper">
+    <div id="loginForm" class="login panel panel-default" style="margin:auto">
+        <validator name="loginFormValidator" @valid="onValid" @invalid="onInvalid">
+            <form class="form-horizontal" v-on:submit.prevent="onSubmit($event)">
+                <fieldset>
+                    <legend>Login</legend>
+                    <div class="form-group label-floating" v-validate-class>
+                        <label for="inputEmail" class="control-label">Email</label>
+                        <input type="text" class="form-control" id="inputEmail" v-model="email"
+                               v-validate:email="['required', 'email']" initial="off"
+                               :classes="{ invalid: 'has-error', }"
+                               v-on:change="onEmailChange">
+                        <p class="help-block" v-if="$loginFormValidator.email.invalid">You must
+                            enter a valid email.</p>
+                        <p class="help-block" v-if="invalidCredentials">Please check your login
+                            credentials and try again.</p>
+                    </div>
+                    <div class="form-group label-floating" v-validate-class>
+                        <label for="inputPassword" class="control-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword"
+                               v-model="password"
+                               v-validate:password="['required']" initial="off"
+                               :classes="{ invalid: 'has-error', }">
+                        <p class="help-block" v-if="$loginFormValidator.password.invalid">You must
+                            enter a valid password.</p>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" v-model="remember"> Remember me
+                        </label>
+                    </div>
+                    <div style="margin-top: 20px; margin-bottom: 10px;">
+                        <a href="pwRecovery.html">Forgot your password?</a>
+                    </div>
+
+                    <div class="col-md-10 center">
+                        <button id="submitButton" type="submit" class="btn btn-success btn-raised"
+                                disabled="disabled">Submit
+                        </button>
+                        <div id="loginAnimation" v-if="spinnerVisibility">
+                            <clip-loader :color="color"></clip-loader>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </validator>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block scripts %}
+<script src="vendors/jquery-1.12.4.js"></script>
+<script src="vendors/vue.js"></script>
+<script src="vendors/vue-validator.js"></script>
+<script src="vendors/vue-spinner.js"></script>
+<script src="vendors/jscookie.js"></script>
+<script src="vendors/bootstrap.js"></script>
+<script src="vendors/material.js"></script>
+<script src="vendors/ripples.js"></script>
+<script src="js/api.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/header.js"></script>
+<script src="js/api.js"></script>
+<script src="js/login.js"></script>
+{% endblock %}

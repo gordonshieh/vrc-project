@@ -170,6 +170,21 @@ public class AppController {
             return output;
         });
 
+        get("/", (request, response) -> {
+            PebbleEngine engine = new PebbleEngine.Builder()
+                    .templateCache(null)
+                    .autoEscaping(false)
+                    .build();
+            PebbleTemplate compiledTemplate = engine.getTemplate("templates/login.html");
+
+            Writer writer = new StringWriter();
+            compiledTemplate.evaluate(writer);
+
+            String output = writer.toString();
+            response.body(output);
+            return output;
+        });
+
         //homepage: return ladder
         get("/api/ladder", (request, response) -> {
             String json = dbManager.getJSONLadder(dbManager.getGameSessionLatest());
