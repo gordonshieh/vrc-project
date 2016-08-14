@@ -5,9 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import com.mitchellbosecke.pebble.PebbleEngine;
+import com.mitchellbosecke.pebble.template.PebbleTemplate;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -133,6 +138,36 @@ public class AppController {
             if (requestedGameSession == null) {
                 halt(BAD_REQUEST, getErrResponse("Must specify gameSession: latest or previous"));
             }
+        });
+
+        get("/ladder", (request, response) -> {
+            PebbleEngine engine = new PebbleEngine.Builder()
+                    .templateCache(null)
+                    .autoEscaping(false)
+                    .build();
+            PebbleTemplate compiledTemplate = engine.getTemplate("templates/ladder.html");
+
+            Writer writer = new StringWriter();
+            compiledTemplate.evaluate(writer);
+
+            String output = writer.toString();
+            response.body(output);
+            return output;
+        });
+
+        get("/groups", (request, response) -> {
+            PebbleEngine engine = new PebbleEngine.Builder()
+                    .templateCache(null)
+                    .autoEscaping(false)
+                    .build();
+            PebbleTemplate compiledTemplate = engine.getTemplate("templates/groups.html");
+
+            Writer writer = new StringWriter();
+            compiledTemplate.evaluate(writer);
+
+            String output = writer.toString();
+            response.body(output);
+            return output;
         });
 
         //homepage: return ladder
