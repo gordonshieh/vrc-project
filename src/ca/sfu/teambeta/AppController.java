@@ -112,6 +112,44 @@ public class AppController {
                 .getResource(KEYSTORE_LOCATION).toString();
         secure(keystorePath, KEYSTORE_PASSWORD, null, null);
 
+        before("/", (request, response) -> {
+            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+            try {
+                boolean authenticated =
+                        UserSessionManager.authenticateSession(sessionToken);
+                if (authenticated) {
+                    response.redirect("/ladder");
+                }
+            } catch (NoSuchSessionException ignored) {
+            }
+        });
+
+        before("/ladder", (request, response) -> {
+            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+            try {
+                boolean authenticated =
+                        UserSessionManager.authenticateSession(sessionToken);
+                if (!authenticated) {
+                    response.redirect("/");
+                }
+            } catch (NoSuchSessionException ignored) {
+                response.redirect("/");
+            }
+        });
+
+        before("/groups", (request, response) -> {
+            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+            try {
+                boolean authenticated =
+                        UserSessionManager.authenticateSession(sessionToken);
+                if (!authenticated) {
+                    response.redirect("/");
+                }
+            } catch (NoSuchSessionException ignored) {
+                response.redirect("/");
+            }
+        });
+
         before("/api/*", (request, response) -> {
             // Allow access to the login endpoint, so they can sign up/log in
             String endpoint = request.splat()[0];
