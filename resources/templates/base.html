@@ -47,8 +47,14 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/ladder">Ladder</a></li>
-                <li><a href="/groups">Groups</a></li>
+                <li {% if page equals
+                "Ladder" %} class="active" {% endif %}>
+                <a href="/ladder">Ladder</a>
+                </li>
+                <li {% if page equals
+                "Groups" %} class="active" {% endif %}>
+                <a href="/groups">Groups</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li v-if="role === 'ADMINISTRATOR'"><a href="registration.html">Admin Panel</a></li>
