@@ -29,7 +29,7 @@
                 var api = new API();
                 var doneCallback = function() {
                     header.mode = "edit";
-                    window.location.href = "/ladder.html";
+                    window.location.href = "/ladder";
                 };
                 var failCallback = function(response) {
                     header.mode = "edit";
