@@ -748,6 +748,12 @@ public class AppController {
             response.status(SERVER_ERROR);
             response.body(getErrResponse(exception.getMessage()));
         });
+
+        before("/logout", (request, response) -> {
+            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+            accountManager.logout(sessionToken);
+            response.redirect("/");
+        });
     }
 
     private GameSession getRequestedGameSession(DBManager dbManager, String requestedGameSession) {
