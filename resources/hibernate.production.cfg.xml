@@ -8,7 +8,7 @@
         <property name="hibernate.connection.password">b3ta</property>
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.connection.url">
-            jdbc:mysql://vrcproject.duckdns.org:3306/production?serverTimezone=America/Vancouver
+            jdbc:mysql://localhost:3306/production?serverTimezone=America/Vancouver
         </property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>

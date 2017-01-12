@@ -9,22 +9,21 @@
         <h1 class="header-initial">Ladder</h1></div>
     <div class="header-item"><h1 class="header-mid">Last modified on {{ timestamp }}</h1></div>
 
-    <div class="header-right header-item">
-        <component :is="mode" transition="fade" transition-mode="out-in"
-                   v-if="role === 'ADMINISTRATOR'">
-        </component>
-        <a v-if="mode == 'edit'" v-if="role === 'ADMINISTRATOR'" href="api/ladder/download"
+    <div class="header-right header-item" v-if="role === 'ADMINISTRATOR'">
+        <component :is="mode" transition="fade" transition-mode="out-in"></component>
+        <a v-if="mode == 'edit'" href="api/ladder/download"
            title="Download Ladder" id="downloadBtn"
            class="btn btn-raised btn-primary header-button">
             <i class="glyphicon glyphicon-download-alt"></i>
         </a>
-        <a v-if="mode == 'edit'" v-if="role === 'ADMINISTRATOR'" v-on:click="uploadLadder()"
+        <a v-if="mode == 'edit'" v-on:click="uploadLadder()"
            title="Upload Ladder" id="uploadLadderBtn"
            class="btn btn-raised btn-primary header-button">
             <i class="glyphicon glyphicon-upload"></i>
         </a>
-        <a v-on:click="onClick()" v-if="role === 'ADMINISTRATOR'"
-           class="btn btn-raised btn-primary header-button">{{ buttonTitle }}</a>
+        <a v-on:click="onClick()" class="btn btn-raised btn-primary header-button">
+            {{ buttonTitle }}
+        </a>
     </div>
     <div id="uploadModal" class="modal">
         <div class="modal-dialog">

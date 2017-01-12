@@ -41,7 +41,6 @@ import ca.sfu.teambeta.core.exceptions.NoSuchSessionException;
 import ca.sfu.teambeta.core.exceptions.NoSuchUserException;
 import ca.sfu.teambeta.logic.GameSession;
 import ca.sfu.teambeta.logic.InputValidator;
-import ca.sfu.teambeta.logic.TimeManager;
 import ca.sfu.teambeta.logic.VrcTimeSelection;
 import ca.sfu.teambeta.persistence.DBManager;
 
@@ -49,11 +48,9 @@ import static spark.Spark.before;
 import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
-import static spark.Spark.halt;
 import static spark.Spark.patch;
 import static spark.Spark.port;
 import static spark.Spark.post;
-import static spark.Spark.secure;
 import static spark.Spark.staticFiles;
 
 /**
@@ -110,78 +107,77 @@ public class AppController {
         gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String keystorePath = this.getClass().getClassLoader()
                 .getResource(KEYSTORE_LOCATION).toString();
-        secure(keystorePath, KEYSTORE_PASSWORD, null, null);
 
-        before("/", (request, response) -> {
-            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
-            try {
-                boolean authenticated =
-                        UserSessionManager.authenticateSession(sessionToken);
-                if (authenticated) {
-                    response.redirect("/ladder");
-                }
-            } catch (NoSuchSessionException ignored) {
-            }
-        });
+//        before("/", (request, response) -> {
+//            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+//            try {
+//                boolean authenticated =
+//                        UserSessionManager.authenticateSession(sessionToken);
+//                if (authenticated) {
+//                    response.redirect("/ladder");
+//                }
+//            } catch (NoSuchSessionException ignored) {
+//            }
+//        });
 
-        before("/ladder", (request, response) -> {
-            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
-            try {
-                boolean authenticated =
-                        UserSessionManager.authenticateSession(sessionToken);
-                if (!authenticated) {
-                    response.redirect("/");
-                }
-            } catch (NoSuchSessionException ignored) {
-                response.redirect("/");
-            }
-        });
+//        before("/ladder", (request, response) -> {
+//            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+//            try {
+//                boolean authenticated =
+//                        UserSessionManager.authenticateSession(sessionToken);
+//                if (!authenticated) {
+//                    response.redirect("/");
+//                }
+//            } catch (NoSuchSessionException ignored) {
+//                response.redirect("/");
+//            }
+//        });
+//
+//        before("/groups", (request, response) -> {
+//            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+//            try {
+//                boolean authenticated =
+//                        UserSessionManager.authenticateSession(sessionToken);
+//                if (!authenticated) {
+//                    response.redirect("/");
+//                }
+//            } catch (NoSuchSessionException ignored) {
+//                response.redirect("/");
+//            }
+//        });
+//
+//        before("/api/*", (request, response) -> {
+//            // Allow access to the login endpoint, so they can sign up/log in
+//            String endpoint = request.splat()[0];
+//            if (!endpoint.contains("login")) {
+//
+//                String sessionToken = request.cookie(SESSION_TOKEN_KEY);
+//                try {
+//                    boolean authenticated =
+//                            UserSessionManager.authenticateSession(sessionToken);
+//                    if (!authenticated) {
+//                        halt(NOT_AUTHENTICATED, getNotAuthenticatedResponse(
+//                                "You must be logged in to view this page."));
+//                    }
+//                } catch (NoSuchSessionException exception) {
+//                    halt(NOT_AUTHENTICATED, getNotAuthenticatedResponse(
+//                            "You must be logged in to view this page."));
+//                }
+//                //UserSessionManager.isAdministratorSession(sessionToken);
+//            }
+//        });
+//
+//        before("/api/matches", (request, response) -> {
+//            String requestedGameSession = request.queryParams(GAMESESSION);
+//            if (requestedGameSession == null) {
+//                halt(BAD_REQUEST, getErrResponse("Must specify gameSession: latest or previous"));
+//            }
+//        });
 
-        before("/groups", (request, response) -> {
-            String sessionToken = request.cookie(SESSION_TOKEN_KEY);
-            try {
-                boolean authenticated =
-                        UserSessionManager.authenticateSession(sessionToken);
-                if (!authenticated) {
-                    response.redirect("/");
-                }
-            } catch (NoSuchSessionException ignored) {
-                response.redirect("/");
-            }
-        });
-
-        before("/api/*", (request, response) -> {
-            // Allow access to the login endpoint, so they can sign up/log in
-            String endpoint = request.splat()[0];
-            if (!endpoint.contains("login")) {
-
-                String sessionToken = request.cookie(SESSION_TOKEN_KEY);
-                try {
-                    boolean authenticated =
-                            UserSessionManager.authenticateSession(sessionToken);
-                    if (!authenticated) {
-                        halt(NOT_AUTHENTICATED, getNotAuthenticatedResponse(
-                                "You must be logged in to view this page."));
-                    }
-                } catch (NoSuchSessionException exception) {
-                    halt(NOT_AUTHENTICATED, getNotAuthenticatedResponse(
-                            "You must be logged in to view this page."));
-                }
-                //UserSessionManager.isAdministratorSession(sessionToken);
-            }
-        });
-
-        before("/api/matches", (request, response) -> {
-            String requestedGameSession = request.queryParams(GAMESESSION);
-            if (requestedGameSession == null) {
-                halt(BAD_REQUEST, getErrResponse("Must specify gameSession: latest or previous"));
-            }
-        });
-
-        get("/ladder", (request, response) -> {
+        get("/", (request, response) -> {
             PebbleEngine engine = new PebbleEngine.Builder()
                     .templateCache(null)
-                    .autoEscaping(false)
+                    .cacheActive(false)
                     .build();
             PebbleTemplate compiledTemplate = engine.getTemplate("templates/ladder.html");
 
@@ -208,20 +204,20 @@ public class AppController {
             return output;
         });
 
-        get("/", (request, response) -> {
-            PebbleEngine engine = new PebbleEngine.Builder()
-                    .templateCache(null)
-                    .autoEscaping(false)
-                    .build();
-            PebbleTemplate compiledTemplate = engine.getTemplate("templates/login.html");
-
-            Writer writer = new StringWriter();
-            compiledTemplate.evaluate(writer);
-
-            String output = writer.toString();
-            response.body(output);
-            return output;
-        });
+//        get("/", (request, response) -> {
+//            PebbleEngine engine = new PebbleEngine.Builder()
+//                    .templateCache(null)
+//                    .autoEscaping(false)
+//                    .build();
+//            PebbleTemplate compiledTemplate = engine.getTemplate("templates/login.html");
+//
+//            Writer writer = new StringWriter();
+//            compiledTemplate.evaluate(writer);
+//
+//            String output = writer.toString();
+//            response.body(output);
+//            return output;
+//        });
 
         //homepage: return ladder
         get("/api/ladder", (request, response) -> {
@@ -243,10 +239,10 @@ public class AppController {
 
         //updates a pair's playing status or position
         patch("/api/ladder/:id", (request, response) -> {
-            if (TimeManager.getInstance().isExpired()) {
-                response.status(NOT_FOUND);
-                return getErrResponse(LADDER_DISABLED);
-            }
+//            if (TimeManager.getInstance().isExpired()) {
+//                response.status(NOT_FOUND);
+//                return getErrResponse(LADDER_DISABLED);
+//            }
             int id;
             try {
                 id = Integer.parseInt(request.params(ID));
@@ -391,7 +387,7 @@ public class AppController {
             }
 
             //Update timeManager which enables ladder editing
-            TimeManager.getInstance().updateTime();
+//            TimeManager.getInstance().updateTime();
             return getOkResponse("");
         }));
 
@@ -676,10 +672,10 @@ public class AppController {
 
         //Set time to a pair and dynamically assign times to scorecards.
         patch("/api/ladder/time/:id", (request, response) -> {
-            if (TimeManager.getInstance().isExpired()) {
-                response.status(NOT_FOUND);
-                return getErrResponse(LADDER_DISABLED);
-            }
+//            if (TimeManager.getInstance().isExpired()) {
+//                response.status(NOT_FOUND);
+//                return getErrResponse(LADDER_DISABLED);
+//            }
             int id;
             try {
                 id = Integer.parseInt(request.params(ID));
